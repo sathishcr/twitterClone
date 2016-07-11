@@ -19,25 +19,30 @@ describe "User pages" do
   end
 
   describe "sign up" do
-    before { visit signup_path}
+    before { visit signup_path }
     let(:submit) { "create my account"}
 
-  describe "with valid info" do
-    before do 
-      fill_in "Name", with: "Example user"
-      fill_in "Email", with: "exampleuser@railstutorials.org"
-      fill_in "Password", with: "foobar"
-      fill_in "Password confirmation" , with: "foobar"
+    describe "with valid info" do
+      before do 
+        fill_in "Name", with: "Example user"
+        fill_in "Email", with: "exampleuser@railstutorials.org"
+        fill_in "Password", with: "foobar"
+        fill_in "Password confirmation" , with: "foobar"
+      end
+      it "should create a user" do
+        expect { click_button submit }.to change(User , :count).by(1)
+      end
+    
+      describe "after saving the user" do
+       before { click_button submit }
+       it { should have_link('Sign out') }
+      end
     end
-    it "should create a user" do
-      expect { click_button submit }.to change(User , :count).by(1)
-    end
-  end
 
-  describe "with invalid info" do
-    it " should not create a user " do
-      expect { click_button submit }.not_to change(User , :count)
+    describe "with invalid info" do
+     it " should not create a user " do
+       expect { click_button submit }.not_to change(User , :count)
+     end
     end
-  end
   end
 end
